@@ -26,11 +26,10 @@
   	def initialize(ip) 
   		 @ip = ip
   	end
-	# This method takes an IP address and uses it to return a hashed JSON object 
+	# This method takes an IP address puts it in as ahashed JSON object 
 	def get_location
         location_uri = URI('https://geocode.xyz')
         params = {
-          'auth' => '103727404519125e15914356x41415',
           'locate' => @ip,
           'json' => 1,
           'region' => 'US',
@@ -115,13 +114,13 @@ class Weather
    	    daily_hash = weather['daily']
    end
 
-   #Uses the created daily has to get the time as well as maximum and minimum temperatures 
+   #Uses the created daily has to get the time as well as the high  and lowimum temperatures 
 
-   def max 
-     max = daily_hash["temperature_2m_max"]
+   def high  
+    high  = daily_hash["temperature_2m_max"]
    end
-   def min
-     min = daily_hash["temperature_2m_min"]
+   def low
+     low = daily_hash["temperature_2m_min"]
    end
      def time
      time = daily_hash['time']
@@ -129,36 +128,38 @@ class Weather
   
 end
 
-#Wraps time as well as minimum and maximum temperature arrays into reusable variables
+#Wraps time as well as lowimum andhigh imum temperature arrays into reusable variables
 
 weather = Weather.new(latitude, longitude, timezone)
 time = weather.time
-max =  weather.max 
-min =  weather.min
+high =  weather.high 
+low =  weather.low
 
 
 #This class defines the output I want the user/developer to see when the program is run
 
  class Output 
-	attr_reader :time, :min, :max
+	attr_reader :time, :low, :high
 
-	def initialize(time, max, min)
-		@min = min  
-		@max = max
+	def initialize(time, high, low)
+		@low = low  
+		@high =high 
 		@time = time
 	end
     
     def final 
-	  while min != [] 
-	     puts "#{time.shift}: Max:#{max.shift} 
-	    Min:#{min.shift}"
+	  while low != [] 
+	     puts "#{time.shift}:High :#{high.shift} 
+	    Low:#{low.shift}"
 	    end
     end
 
 end
 
-date = Output.new(time, max, min) 
+date = Output.new(time, high , low) 
 puts date.final
+
+
 
 
   
